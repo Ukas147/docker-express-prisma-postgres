@@ -44,11 +44,12 @@ export async function patchTaskDescription(req: Request<{ id: string }>, res: Re
   }
 }
 
-export async function patchTaskCompleted(req: Request<{ id: string }>, res: Response) {
+export async function patchTaskCompleted(req: Request<{ id: string, isCompleted: boolean }>, res: Response) {
   const { id } = req.params;
+  const { isCompleted } = req.body;
 
   try {
-    const updated = await taskService.updateTaskCompleted(id);
+    const updated = await taskService.updateTaskCompleted(id, isCompleted);
     res.json(updated);
   } catch {
     res.status(404).json({ error: "não encontrado" });

@@ -17,8 +17,8 @@ export async function updateTaskDescription(id: string, newDescription: string) 
   return await taskRepository.updateDescription(id, newDescription);
 }
 
-export async function updateTaskCompleted(id: string) {
-  return await taskRepository.updateCompleted(id);
+export async function updateTaskCompleted(id: string, isCompleted: boolean) {
+  return await taskRepository.updateCompleted(id, isCompleted);
 }
 
 export async function softDeleteTask(id: string) {

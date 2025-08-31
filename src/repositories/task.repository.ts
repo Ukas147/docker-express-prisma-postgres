@@ -26,10 +26,10 @@ export const taskRepository = {
     });
   },
 
-  updateCompleted: async (id: string): Promise<Task> => {
+  updateCompleted: async (id: string, newIsCompleted: boolean): Promise<Task> => {
     return db.task.update({
       where: { id },
-      data: { isCompleted: true }
+      data: { isCompleted: newIsCompleted }
     });
   },
 
