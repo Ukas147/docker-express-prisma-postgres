@@ -1,0 +1,55 @@
+name: CI Backend
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: ukas
+          POSTGRES_PASSWORD: 12345678
+          POSTGRES_DB: ukas_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U ukas"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install deps
+        run: npm install
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Run migrations
+        env:
+          DATABASE_URL: postgresql://ukas:12345678@localhost:5432/ukas_db
+        run: npx prisma migrate deploy
+
+      - name: Build project
+        run: npm run build
+
+      # - name: Run tests
+      #   env:
+      #     DATABASE_URL: postgresql://ukas:12345678@localhost:5432/ukas_db
+      #   run: npm test
