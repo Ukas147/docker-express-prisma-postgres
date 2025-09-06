@@ -61,7 +61,7 @@ export async function deleteTask(req: Request<{ id: string }>, res: Response) {
 
   try {
     const updated = await taskService.softDeleteTask(id);
-    res.json({ message: `usuário ${updated.id} deletado` });
+    res.json({ message: `tarefa ${updated.id} deletada` });
   } catch {
     res.status(404).json({ error: "não encontrado" });
   }
