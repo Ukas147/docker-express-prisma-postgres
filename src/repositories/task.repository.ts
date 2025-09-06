@@ -3,7 +3,7 @@ import type { Task } from "@prisma/client";
 
 export const taskRepository = {
   findAll: async (): Promise<Task[]> => {
-    return db.task.findMany();
+    return db.task.findMany({ where: { isDeleted: false } });
   },
 
   create: async (title: string, description: string): Promise<Task> => {

@@ -3,7 +3,7 @@ import type { User } from "@prisma/client";
 
 export const userRepository = {
   findAll: async (): Promise<User[]> => {
-    return db.user.findMany();
+    return db.user.findMany({ where: { isDeleted: false } });
   },
 
   create: async (name: string, email: string): Promise<User> => {
